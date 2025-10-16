@@ -21,13 +21,28 @@ export const createProduct = asyncHandler(async (req, res) => {
 // @desc Get All Product
 // @route GET /api/v1/products
 export const getProducts = asyncHandler(async (req, res) => {
-  res.send('Get All Products')
+    const products = await Product.find()
+    res.status(200).json({
+        success: true,
+        count: products.length,
+        products
+    })
 })
 
 // @desc Get Single Product
 // @route GET /api/v1/products/:id
 export const getProduct = asyncHandler(async (req, res) => {
-  res.send('Get Single Product')
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+        res.status(404).json({
+            success: false,
+            message: 'Product not found'
+        })
+    }
+    res.status(200).json({
+        success: true,
+        product
+    })
 })
 
 
