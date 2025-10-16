@@ -22,6 +22,13 @@ export const createProduct = asyncHandler(async (req, res) => {
 // @route GET /api/v1/products
 export const getProducts = asyncHandler(async (req, res) => {
     const products = await Product.find()
+    if (!products) {
+        res.status(404).json({
+            success: false,
+            message: 'No products found'
+        })
+    }
+
     res.status(200).json({
         success: true,
         count: products.length,
@@ -50,11 +57,33 @@ export const getProduct = asyncHandler(async (req, res) => {
 // @desc Update Product
 // @route PUT /api/v1/products/:id
 export const updateProduct = asyncHandler(async (req, res) => {
-    res.send('Update Product')
+   const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+   if (!product) {
+       res.status(404).json({
+           success: false,
+           message: 'Product not found'
+       })
+   }
+    res.status(200).json({
+        success: true,
+        product
+    })
+
 })
 
 // @desc Delete Product
 // @route DELETE /api/v1/products/:id
 export const deleteProduct = asyncHandler(async (req, res) => {
-    res.send('Delete Product')
+    
+    const product = await Product.findByIdAndDelete(req.params.id)
+    if (!product) {
+        res.status(404).json({
+            success: false,
+            message: 'Product not found'
+        })
+    }
+    res.status(200).json({
+        success: true,
+        message: 'Product deleted'
+    })
 })
