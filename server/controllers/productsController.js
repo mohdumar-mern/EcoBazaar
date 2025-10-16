@@ -1,4 +1,22 @@
 import asyncHandler from 'express-async-handler'
+import Product from '../models/productModel.js'
+
+
+
+
+// @desc Post Product
+// @route POST /api/v1/products
+export const createProduct = asyncHandler(async (req, res) => {
+ const product = await Product.create(req.body)
+ res.status(201).json({
+    success: true,
+    product
+ })
+})
+
+
+
+
 
 // @desc Get All Product
 // @route GET /api/v1/products
@@ -12,11 +30,7 @@ export const getProduct = asyncHandler(async (req, res) => {
   res.send('Get Single Product')
 })
 
-// @desc Create New Product
-// @route POST /api/v1/products
-export const createProduct = asyncHandler(async (req, res) => {
-    res.send('Create New Product')
-})
+
 
 // @desc Update Product
 // @route PUT /api/v1/products/:id
