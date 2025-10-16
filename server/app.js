@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.use('/api/v1/products', productsRoutes);
+app.use('/api/v1', productsRoutes);
 
 
 
