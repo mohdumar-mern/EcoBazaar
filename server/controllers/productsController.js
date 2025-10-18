@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 import HandleError from '../utils/handleError.js'
+import ApiFunctionality from '../utils/apiFunctionality.js'
 
 
 
@@ -19,17 +20,24 @@ export const createProduct = asyncHandler(async (req, res) => {
 // @desc Get All Product
 // @route GET /api/v1/products
 export const getProducts = asyncHandler(async (req, res, next) => {
-    const products = await Product.find()
-    if (!products) {
-        return next(new HandleError('No products found', 404))
-    }
+  // Initialize ApiFunctionality with query and query string
+  const api = new ApiFunctionality(Product.find(), req.query).search().filter();
 
-    res.status(200).json({
-        success: true,
-        count: products.length,
-        products
-    })
-})
+  // Execute the query
+  const products = await api.query.exec();
+
+  // Check if any products were found
+  if (!products || products.length === 0) {
+    return next(new HandleError("No products found", 404));
+  }
+
+  // Send response
+  res.status(200).json({
+    success: true,
+    count: products.length,
+    products,
+  });
+});
 
 // @desc Get Single Product
 // @route GET /api/v1/products/:id
