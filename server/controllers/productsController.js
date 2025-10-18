@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import HandleError from '../utils/handleError.js'
 
 
 
@@ -7,26 +8,20 @@ import Product from '../models/productModel.js'
 // @desc Post Product
 // @route POST /api/v1/products
 export const createProduct = asyncHandler(async (req, res) => {
- const product = await Product.create(req.body)
- res.status(201).json({
-    success: true,
-    product
- })
+    const product = await Product.create(req.body)
+    res.status(201).json({
+        success: true,
+        product
+    })
 })
-
-
-
 
 
 // @desc Get All Product
 // @route GET /api/v1/products
-export const getProducts = asyncHandler(async (req, res) => {
+export const getProducts = asyncHandler(async (req, res, next) => {
     const products = await Product.find()
     if (!products) {
-        res.status(404).json({
-            success: false,
-            message: 'No products found'
-        })
+        return next(new HandleError('No products found', 404))
     }
 
     res.status(200).json({
@@ -38,13 +33,10 @@ export const getProducts = asyncHandler(async (req, res) => {
 
 // @desc Get Single Product
 // @route GET /api/v1/products/:id
-export const getProduct = asyncHandler(async (req, res) => {
+export const getProduct = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(req.params.id)
     if (!product) {
-        res.status(404).json({
-            success: false,
-            message: 'Product not found'
-        })
+        return next(new HandleError('Product not found', 404))
     }
     res.status(200).json({
         success: true,
@@ -57,13 +49,10 @@ export const getProduct = asyncHandler(async (req, res) => {
 // @desc Update Product
 // @route PUT /api/v1/products/:id
 export const updateProduct = asyncHandler(async (req, res) => {
-   const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-   if (!product) {
-       res.status(404).json({
-           success: false,
-           message: 'Product not found'
-       })
-   }
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    if (!product) {
+        return next(new HandleError('Product not found', 404))
+    }
     res.status(200).json({
         success: true,
         product
@@ -74,13 +63,10 @@ export const updateProduct = asyncHandler(async (req, res) => {
 // @desc Delete Product
 // @route DELETE /api/v1/products/:id
 export const deleteProduct = asyncHandler(async (req, res) => {
-    
+
     const product = await Product.findByIdAndDelete(req.params.id)
     if (!product) {
-        res.status(404).json({
-            success: false,
-            message: 'Product not found'
-        })
+        return next(new HandleError('Product not found', 404))
     }
     res.status(200).json({
         success: true,
