@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from "morgan";
 
 import productsRoutes from './routes/productsRoute.js';
-import { errorHandling } from './middleware/errorHandlingMiddleware.js';
+import { errorHandler, errorHandling } from './middleware/errorHandlingMiddleware.js';
 
 const app = express();
 
@@ -22,6 +22,7 @@ app.use('/api/v1', productsRoutes);
 
 // Middleware for handling errors
 app.use(errorHandling);
+app.use(errorHandler)
 
 
 
