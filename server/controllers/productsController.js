@@ -20,23 +20,39 @@ export const createProduct = asyncHandler(async (req, res) => {
 // @desc Get All Product
 // @route GET /api/v1/products
 export const getProducts = asyncHandler(async (req, res, next) => {
-    const resultsPerPage = 3;
+    const resultsPerPage = parseInt(req.query.pageSize) || 8;
   // Initialize ApiFunctionality with query and query string
-  const api = new ApiFunctionality(Product.find(), req.query).search().filter().pagination(resultsPerPage);
+  const api = new ApiFunctionality(Product.find(), req.query).search().filter();
+  // Getting filterd query before pagination
+    const filteredProductsCount = await api.query.clone().countDocuments();
+    // Calculate Total pages based on the filtered products count
+    const totalPages = Math.ceil(filteredProductsCount / resultsPerPage); 
+    const page = parseInt(req.query.page) || 1;
+    // Ensure current page does not exceed total pages
+    if (page > totalPages && totalPages > 0) {
+      return next(new HandleError("Page number exceeds total pages", 404));
+    }
 
+    // Apply pagination
+    api.pagination(resultsPerPage);
   // Execute the query
   const products = await api.query.exec();
 
   // Check if any products were found
-  if (!products || products.length === 0) {
-    return next(new HandleError("No products found", 404));
-  }
+//   if (!products || products.length === 0) {
+//     return next(new HandleError("No products found", 404));
+//   }
 
   // Send response
   res.status(200).json({
     success: true,
-    count: products.length,
     products,
+    filteredProductsCount,
+    resultsPerPage,
+    totalPages,
+    currentPage: page
+
+
   });
 });
 
