@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 import HandleError from "../utils/handleError.js";
+import bcrypt from "bcryptjs";
 
 
 // @desc Register a User
@@ -16,10 +17,13 @@ export const registerUser = asyncHandler(async (req, res, next) => {
     if (userExists) {
         return next(new HandleError("User already exists", 400));
     }
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
     const user = await User.create({
         name,
         email,
-        password,
+        password : hashedPassword,
         avatar:{
             public_id: "avatar.public_id,",
             url: "avatar.url"
