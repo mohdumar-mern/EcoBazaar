@@ -40,6 +40,12 @@ class ApiFunctionality {
     this.query = this.query.find(queryObj);
 
     return this;
+  } 
+  pagination(resultsPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1;
+    const skip = resultsPerPage * (currentPage - 1);
+    this.query = this.query.limit(resultsPerPage).skip(skip);
+    return this;
   }
 }
 
