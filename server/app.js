@@ -1,7 +1,11 @@
 import express from 'express';
 import morgan from "morgan";
 
+// Import Routes
 import productsRoutes from './routes/productsRoute.js';
+import usersRoutes from './routes/userRoutes.js';
+
+// Import Middlewares
 import { errorHandler, errorHandling } from './middleware/errorHandlingMiddleware.js';
 
 const app = express();
@@ -18,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1', productsRoutes);
+app.use('/api/v1', usersRoutes);
 
 
 // Middleware for handling errors
