@@ -9,6 +9,7 @@ import ApiFunctionality from '../utils/apiFunctionality.js'
 // @desc Post Product
 // @route POST /api/v1/products
 export const createProduct = asyncHandler(async (req, res) => {
+    req.body.user = req.user.id; // Assign the user ID from the authenticated user
     const product = await Product.create(req.body)
     res.status(201).json({
         success: true,
