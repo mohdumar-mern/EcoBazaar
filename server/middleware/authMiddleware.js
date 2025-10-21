@@ -31,9 +31,12 @@ export const protect = asyncHandler(async (req, res, next) => {
 });
 
 
-// export const adminOnly = (req, res, next) => {
-//   if (req.user && req.user.role === "admin") {
-//     return next();
-//   }
-//   return res.status(403).json({ message: "Admin access only" });
-// };
+// Roele-based access control middleware
+export const roleBasedAccess = (...role) => {
+  return (req, res, next) => {
+    if (!role.includes(req.user.role)) {
+      return next(new HandleError(`Role (${req.user.role}) is not allowed to access this resource`, 403));
+    }
+    next();
+  }
+};

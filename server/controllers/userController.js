@@ -8,7 +8,7 @@ import { generateToken } from "../utils/generateToken.js";
 // @desc Register a User
 // @route POST /api/v1/register
 export const registerUser = asyncHandler(async (req, res, next) => {
-    const { name, email, password, avatar } = req.body;
+    const { name, email, password, avatar, role } = req.body;
     // Check if all fields are present
     if (!name || !email || !password) {
         return next(new HandleError("Page number exceeds total pages", 404));
@@ -24,6 +24,7 @@ export const registerUser = asyncHandler(async (req, res, next) => {
     const user = await User.create({
         name,
         email,
+        role: role || "user",
         password: hashedPassword,
         avatar: {
             public_id: "avatar.public_id,",
