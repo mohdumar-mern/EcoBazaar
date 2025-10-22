@@ -159,8 +159,12 @@ If you didn't request this, please ignore this email.
 // ========================================
 export const resetPassword = asyncHandler(async (req, res, next) => {
   const { token } = req.params;
-  const { password } = req.body;
-
+  const { password, confirmPassword } = req.body;
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    return next(new HandleError("Passwords do not match", 400));
+  }
+  // Hash the token to compare with DB
   const resetPasswordToken = crypto.createHash("sha256").update(token).digest("hex");
 
   const user = await User.findOne({
