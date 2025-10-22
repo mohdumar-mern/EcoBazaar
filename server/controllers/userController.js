@@ -189,3 +189,19 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
     message: "Password has been reset successfully",
   });
 });
+
+
+// ========================================
+// @desc    Get User Details
+// @route   GET /api/v1/profile
+// ========================================
+export const getUserDetails = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user?.id);
+  if (!user) {
+    return next(new HandleError("User not found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
