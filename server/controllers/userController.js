@@ -4,6 +4,7 @@ import HandleError from "../utils/handleError.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { generateToken } from "../utils/generateToken.js";
+import sendEmail from "../utils/sendEmail.js";
 
 // ========================================
 // @desc    Register a new user
@@ -105,24 +106,52 @@ export const logoutUser = asyncHandler(async (req, res, next) => {
 export const forgotPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
 
+  // 1️⃣ Check if user exists
   const user = await User.findOne({ email });
   if (!user) {
     return next(new HandleError("User not found with this email", 404));
   }
 
-  // Generate reset token
+  // 2️⃣ Generate reset token
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
 
-  // Create reset URL (send via email later)
+  // 3️⃣ Create password reset URL
   const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${resetToken}`;
 
-  res.status(200).json({
-    success: true,
-    message: "Password reset token generated successfully",
-    resetUrl,
-  });
+  // 4️⃣ Create email message
+  const message = `
+You are receiving this email because you (or someone else) requested a password reset.
+Please click the link below or copy-paste it in your browser to reset your password:
+
+${resetUrl}
+
+If you didn't request this, please ignore this email.
+`;
+
+  try {
+    // 5️⃣ Send email
+    await sendEmail(
+      "Password Recovery 🔑",
+      message,
+      user.email
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `Email sent to: ${user.email}`,
+    });
+  } catch (error) {
+    // 6️⃣ Rollback token if email fails
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    console.error("❌ Forgot password email failed:", error.message);
+    return next(new HandleError("Email could not be sent", 500));
+  }
 });
+
 
 // ========================================
 // @desc    Reset Password
