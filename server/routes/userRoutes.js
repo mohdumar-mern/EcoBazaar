@@ -1,7 +1,7 @@
 import express from 'express';
 
 const router = express.Router();
-import { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updatePassword } from '../controllers/userController.js';
+import { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updatePassword, updateUserProfile} from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 router.route('/register').post(registerUser); // User Registration Route
@@ -11,6 +11,7 @@ router.route('/password/forgot').post(forgotPassword);  // Forgot Password Route
 router.route('/password/reset/:token').post(resetPassword);  // Reset Password Route
 router.route('/profile').get(protect,getUserDetails)  // Get User Details Route
 router.route('/password/update').put(protect,updatePassword)  // Update Password Route
+router.route('/profile/update').put(protect,updateUserProfile)  // Update User Profile Route
 
 
 export default router;

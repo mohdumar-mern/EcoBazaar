@@ -240,3 +240,26 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
     message: "Password updated successfully",
   });
 });
+
+
+// ========================================
+// @desc    Update User Profile
+// @route   PUT /api/v1/profile/update
+// ========================================
+export const updateUserProfile = asyncHandler(async (req, res, next) => {
+  const { name, email, avatar } = req.body;
+  const user = await User.findById(req.user?.id);
+  if (!user) {
+    return next(new HandleError("User not found", 404));
+  }
+  user.name = name || user.name;
+  user.email = email || user.email;
+  // Note: Avatar update logic would go here (e.g., uploading to cloud storage)
+
+  await user.save();
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+    user,
+  });
+}); 
