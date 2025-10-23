@@ -5,7 +5,12 @@ import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } 
 import { protect, roleBasedAccess } from '../middleware/authMiddleware.js';
 
 // Routes for products
-router.route('/products/').get(protect,getProducts).post(protect,roleBasedAccess('admin'),createProduct);
-router.route('/product/:id').get(getProduct).put(roleBasedAccess('admin'),updateProduct).delete(roleBasedAccess('admin'),deleteProduct);
+router.route('/products/').get(getProducts)
+router.route('/admin/product/create')
+.post(protect,roleBasedAccess('admin'),createProduct);
+router.route('/product/:id').get(getProduct)
+router.route('admin/product/:id')
+.put(protect,roleBasedAccess('admin'),updateProduct)
+.delete(protect,roleBasedAccess('admin'),deleteProduct);
 
 export default router;
