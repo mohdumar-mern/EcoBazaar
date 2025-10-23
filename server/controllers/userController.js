@@ -205,3 +205,38 @@ export const getUserDetails = asyncHandler(async (req, res, next) => {
     user,
   });
 });
+
+
+// ========================================
+// @desc    Update User Password
+// @route   PUT /api/v1/password/update
+// ========================================
+export const updatePassword = asyncHandler(async (req, res, next) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  // Check all fields are provided
+    if (!oldPassword || !newPassword || !confirmPassword) {
+    return next(new HandleError("Please provide all required fields", 400));
+  }
+  const user = await User.findById(req.user?.id).select("+password");
+  // Check if user exists
+  if (!user) {
+    return next(new HandleError("User not found", 404));
+  }
+  // Check if old password matches
+  const isOldPasswordMatched = await bcrypt.compare(oldPassword, user.password);
+  if (!isOldPasswordMatched) {
+    return next(new HandleError("Old password is incorrect", 400));
+  }
+  // Check if new passwords and confirm password match
+  if (newPassword !== confirmPassword) {
+    return next(new HandleError("Passwords do not match", 400));
+  }
+  // Update to new password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+  await user.save();
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully",
+  });
+});
