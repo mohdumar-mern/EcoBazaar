@@ -99,3 +99,13 @@ export const deleteProduct = asyncHandler(async (req, res) => {
         message: 'Product deleted'
     })
 })
+
+// @desc Admin Get All Product
+// @route DELETE /api/v1/admin/products
+export const getAdminProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find()
+    res.status(200).json({
+        success: true,
+        products
+    })
+})
