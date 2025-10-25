@@ -263,3 +263,15 @@ export const updateUserProfile = asyncHandler(async (req, res, next) => {
     user,
   });
 }); 
+
+// ========================================
+// @desc    Admin: Getting User Info
+// @route   PUT /api/v1/admin/users
+// ========================================
+export const getAdminUserList = asyncHandler(async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({
+    success: true,
+    users
+  })
+})
