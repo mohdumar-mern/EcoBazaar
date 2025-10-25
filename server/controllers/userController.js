@@ -290,3 +290,21 @@ export const getAdminUserDetails = asyncHandler(async (req, res, next) => {
     user
   })
 });
+
+// ========================================
+// @desc    Admin: Change User Role
+// @route   PUT /api/v1/admin/user/:id/role
+// ========================================
+export const adminChangeUserRole = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(new HandleError(`User doesn't exists this id: ${req.params.id}`, 404));
+  } 
+  user.role = req.body.role || user.role;
+  await user.save();
+  res.status(200).json({
+    success: true,
+    message: 'User role updated successfully',
+    user
+  })
+});
