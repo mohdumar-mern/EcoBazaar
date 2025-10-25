@@ -1,7 +1,7 @@
 import express from 'express';
 
 const router = express.Router();
-import { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updatePassword, updateUserProfile, getAdminUserList, getAdminUserDetails, adminChangeUserRole} from '../controllers/userController.js';
+import { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updatePassword, updateUserProfile, getAdminUserList, getAdminUserDetails, adminChangeUserRole, adminDeleteUser} from '../controllers/userController.js';
 import { protect, roleBasedAccess } from '../middleware/authMiddleware.js';
 
 router.route('/register').post(registerUser); // User Registration Route
@@ -15,6 +15,7 @@ router.route('/admin/user/:id').get(protect,roleBasedAccess('admin'),getAdminUse
 router.route('/password/update').put(protect,updatePassword)  // Update Password Route
 router.route('/profile/update').put(protect,updateUserProfile)  // Update User Profile Route
 router.route('/admin/user/:id/role').patch(protect,roleBasedAccess('admin'), adminChangeUserRole)  // Admin Change User Role Route
+router.route('/admin/user/:id/delete').delete(protect,roleBasedAccess('admin'), adminDeleteUser)  // Admin Delete User Route
 
 
 export default router;
