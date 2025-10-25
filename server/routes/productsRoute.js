@@ -1,11 +1,12 @@
 import express from 'express';
 const router = express.Router();
 
-import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from '../controllers/productsController.js';
+import { getProducts, getProduct, createProduct, updateProduct, deleteProduct, getAdminProducts } from '../controllers/productsController.js';
 import { protect, roleBasedAccess } from '../middleware/authMiddleware.js';
 
 // Routes for products
 router.route('/products/').get(getProducts)
+router.route('/admin/products/').get(protect,roleBasedAccess('admin'),getAdminProducts)
 router.route('/admin/product/create')
 .post(protect,roleBasedAccess('admin'),createProduct);
 router.route('/product/:id').get(getProduct)
