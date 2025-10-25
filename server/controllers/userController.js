@@ -283,7 +283,7 @@ export const getAdminUserList = asyncHandler(async (req, res, next) => {
 export const getAdminUserDetails = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);
   if (!user) {
-    return next(new HandleError("User not found", 404));
+    return next(new HandleError(`User doesn't exists this id: ${req.params.id}`, 404));
   }
   res.status(200).json({
     success: true,
