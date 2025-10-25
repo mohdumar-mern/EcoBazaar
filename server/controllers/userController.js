@@ -265,7 +265,7 @@ export const updateUserProfile = asyncHandler(async (req, res, next) => {
 }); 
 
 // ========================================
-// @desc    Admin: Getting User Info
+// @desc    Admin: Getting All Users Info
 // @route   PUT /api/v1/admin/users
 // ========================================
 export const getAdminUserList = asyncHandler(async (req, res, next) => {
@@ -275,3 +275,18 @@ export const getAdminUserList = asyncHandler(async (req, res, next) => {
     users
   })
 })
+
+// ========================================
+// @desc    Admin: Getting User Info
+// @route   PUT /api/v1/admin/users/:id
+// ========================================
+export const getAdminUserDetails = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(new HandleError("User not found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    user
+  })
+});
