@@ -50,3 +50,17 @@ export const getSingleOrder = asyncHandler(async (req, res, next) => {
         order
     });
 });
+
+
+// @desc Get Logged in user Orders
+// @route GET /api/v1/orders/me
+export const myOrders = asyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+    if (!orders) {
+        return next(new HandleError("No orders found for this user", 404));
+    }
+    res.status(200).json({
+        success: true,
+        orders
+    });
+});
