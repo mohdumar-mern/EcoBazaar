@@ -64,3 +64,21 @@ export const myOrders = asyncHandler(async (req, res) => {
         orders
     });
 });
+
+// @desc Admin Get All Orders
+// @route GET /api/v1/admin/orders
+export const getAllOrders = asyncHandler(async (req, res) => {
+    const orders = await Order.find();
+   if (!orders) {
+        return next(new HandleError("No orders found", 404));
+    }
+    let totalAmount = 0;
+    orders.forEach(order => {
+        totalAmount += order.totalPrice;
+    });
+    res.status(200).json({
+        success: true,
+        totalAmount,
+        orders  
+    });
+});
