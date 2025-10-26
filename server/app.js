@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 // Import Routes
 import productsRoutes from './routes/productsRoute.js';
 import usersRoutes from './routes/userRoutes.js';
+import orderRoutes from './routes/orderRoute.js';
 
 // Import Middlewares
 import { errorHandler, errorHandling } from './middleware/errorHandlingMiddleware.js';
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', productsRoutes);
 app.use('/api/v1', usersRoutes);
+app.use('/api/v1', orderRoutes);
 
 
 // Middleware for handling errors
