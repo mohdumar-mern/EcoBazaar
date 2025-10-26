@@ -111,7 +111,7 @@ export const getAdminProducts = asyncHandler(async (req, res) => {
 })
 
 // @desc Creating and Updating Review
-// @route DELETE /api/v1
+// @route DELETE /api/v1/review
 export const createProductReview = asyncHandler(async (req, res, next) => {
   const { rating, comment, productId } = req.body;
 
@@ -160,4 +160,17 @@ export const createProductReview = asyncHandler(async (req, res, next) => {
       : "Review added successfully",
       product
   });
+});
+
+// @desc Getting Product Review
+// @route DELETE /api/v1/reviews
+export const getProductReviews = asyncHandler(async (req, res, next) => {
+  const product = await Product.findById(req.query.id);
+    if (!product) {
+        return next(new HandleError('Product not found', 404))
+    }
+    res.status(200).json({
+        success: true,
+        reviews: product.reviews
+    })
 });
