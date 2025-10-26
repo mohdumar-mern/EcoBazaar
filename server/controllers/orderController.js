@@ -34,3 +34,19 @@ export const newOrder = asyncHandler(async (req, res) =>
         order
     });
 }); 
+
+// @desc Admin Get Single Order
+// @route GET /api/v1/admin/order/:id
+export const getSingleOrder = asyncHandler(async (req, res, next) => {
+    const order = await Order.findById(req.params.id).populate(
+        "user",
+        "name email"
+    );
+    if (!order) {
+        return next(new HandleError("Order not found with this Id", 404));
+    }
+    res.status(200).json({
+        success: true,
+        order
+    });
+});

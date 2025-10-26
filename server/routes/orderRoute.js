@@ -1,9 +1,12 @@
 import expres from "express";
 const router = expres.Router();
 
-import { newOrder } from "../controllers/orderController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { getSingleOrder, newOrder } from "../controllers/orderController.js";
+import { protect, roleBasedAccess } from "../middleware/authMiddleware.js";
 
-router.post("/order/new",protect, newOrder);  // create new order
+router.route("/order/new")
+    .post(protect, newOrder);  // create new order
+router.route("/admin/order/:id")
+    .get(protect, roleBasedAccess("admin"), getSingleOrder);  // get single order by admin
 
 export default router;
