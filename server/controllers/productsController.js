@@ -174,3 +174,32 @@ export const getProductReviews = asyncHandler(async (req, res, next) => {
         reviews: product.reviews
     })
 });
+
+// @desc Delete Product Review
+// @route DELETE /api/v1/reviews
+export const deleteReview = asyncHandler(async (req, res, next) => {
+  const product = await Product.findById(req.query.productId);
+    if (!product) {
+        return next(new HandleError('Product not found', 404))
+    }   
+    // Filter out the review to be deleted
+    const reviews = product.reviews.filter(
+        (rev) => rev._id.toString() !== req.query.id.toString()
+    );
+    const numOfReviews = reviews.length;
+    // Recalculate ratings
+    const ratings =
+        reviews.reduce((acc, item) => acc + item.rating, 0) / (reviews.length === 0 ? 1 : reviews.length);
+    await Product.findByIdAndUpdate(
+        req.query.productId,
+        { reviews,
+          ratings,
+          numOfReviews
+        },
+        { new: true, runValidators: true }
+    );
+    res.status(200).json({
+        success: true,
+        message: 'Review deleted successfully'
+    })
+});
