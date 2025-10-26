@@ -109,3 +109,55 @@ export const getAdminProducts = asyncHandler(async (req, res) => {
         products
     })
 })
+
+// @desc Creating and Updating Review
+// @route DELETE /api/v1
+export const createProductReview = asyncHandler(async (req, res, next) => {
+  const { rating, comment, productId } = req.body;
+
+  // 1️⃣ Find product by ID
+  const product = await Product.findById(productId);
+  if (!product) {
+    return next(new HandleError("Product not found", 404));
+  }
+
+  // 2️⃣ Create review object
+  const review = {
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+
+  // 3️⃣ Check if user has already reviewed
+  const existingReview = product.reviews.find(
+    (r) => r.user.toString() === req.user._id.toString()
+  );
+
+  if (existingReview) {
+    // Update old review
+    existingReview.comment = comment;
+    existingReview.rating = Number(rating);
+  } else {
+    // Add new review
+    product.reviews.push(review);
+  }
+
+  // 4️⃣ Update review count
+  product.numOfReviews = product.reviews.length;
+
+  // 5️⃣ Calculate average rating
+  const totalRating = product.reviews.reduce((acc, item) => acc + item.rating, 0);
+  product.ratings = totalRating / product.reviews.length;
+
+  // 6️⃣ Save product without validation
+  await product.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
+    message: existingReview
+      ? "Review updated successfully"
+      : "Review added successfully",
+      product
+  });
+});
