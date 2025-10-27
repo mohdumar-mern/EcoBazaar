@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,30 +12,39 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import IconBtn from "./IconBtn";
+import Rating from "./Rating";
 
 export function ProductCard({ products }) {
   const router = useRouter();
 
-  // 🧭 Function to navigate when card is clicked
   const handleCardClick = () => {
     router.push(`/products/${products._id}`);
   };
 
+  const handleRatingChange = (newRating) => {
+    console.log(`New rating selected: ${newRating}`);
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); // ❌ Stop parent navigation
+    console.log("Added to cart:", products._id);
+    router.push("/cart"); // ✅ navigate to cart only
+  };
+
   return (
-    <Card 
-    className="w-full max-w-sm overflow-hidden rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-all bg-white" 
+    <Card
+      className="w-full max-w-sm overflow-hidden rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-all bg-white cursor-pointer"
+      onClick={handleCardClick}
     >
       {/* 🖼️ Product Image */}
       <CardHeader className="p-0">
         <Image
-          src={products?.images[0]?.url}
+          src={products?.images?.[0]?.url}
           alt={products?.name || "Product"}
           width={400}
           height={300}
           className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105"
           priority
-    onClick={handleCardClick}
-
         />
       </CardHeader>
 
@@ -45,9 +53,12 @@ export function ProductCard({ products }) {
         <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
           {products?.name || "Unnamed Product"}
         </CardTitle>
-        <CardDescription className="text-sm text-gray-600 line-clamp-2">
+        <CardDescription className="text-sm text-gray-600 line-clamp-2 mb-2">
           {products?.description || "No description available."}
         </CardDescription>
+
+        <Rating value={products.ratings} showValue onClick={handleRatingChange} />
+        <p className="text-sm text-gray-500">Reviews: {products.numOfReviews}</p>
       </CardContent>
 
       {/* 💰 Price + Add to Cart */}
@@ -56,13 +67,14 @@ export function ProductCard({ products }) {
           ₹{products?.price || "0.00"}
         </p>
 
-        <IconBtn
+        <Button
           variant="outline"
-          icon={ShoppingCart}
-          label="Add To Cart"
-          href="/cart"
-          className="text-green-600 border-green-500 hover:bg-green-600 hover:text-white transition-colors"
-        />
+          className="flex items-center gap-2 text-green-600 border-green-500 hover:bg-green-600 hover:text-white transition-colors"
+          onClick={handleAddToCart}
+        >
+          <ShoppingCart size={18} />
+          Add To Cart
+        </Button>
       </CardFooter>
     </Card>
   );

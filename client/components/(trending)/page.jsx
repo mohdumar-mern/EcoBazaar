@@ -17,8 +17,22 @@ const Trending = () => {
              { "url": "https://cdn.pixabay.com/photo/2024/04/29/04/21/tshirt-8726716_640.jpg"}
 
             ],
-            "reviews": [],
-            "createdAt": "2025-10-18T06:17:44.171Z",
+  "reviews": [
+                {
+                    "user": "68f8730a68ffe8a7dd74acb7",
+                    "name": "Mohd Umar",
+                    "rating": 4,
+                    "comment": "This Xiomi laptop is good",
+                    "_id": "68fdcc95abf45df80d696cef"
+                },
+                {
+                    "user": "68fc86f250dda1cb430febd5",
+                    "name": "Umar Azmi",
+                    "rating": 4,
+                    "comment": "This Xiomi laptop is good",
+                    "_id": "68fdcd29abf45df80d696cf9"
+                }
+            ],            "createdAt": "2025-10-18T06:17:44.171Z",
             "updatedAt": "2025-10-26T10:57:02.082Z",
             "__v": 1
         },
@@ -51,7 +65,7 @@ const Trending = () => {
             "name": "Jeans",
             "description": "This Jeans is very Beautiful",
             "price": 400,
-            "ratings": 3,
+            "ratings": 3.5,
             "category": "Clothing",
             "stock": 2,
             "numOfReviews": 1,

@@ -5,7 +5,7 @@ const RSLayout = async ({ children }) => {
   return (
     <div className="mx-auto w-full">
       <Header />
-      <main className="px-4 py-2">
+      <main className="px-4 py-2m min-h-[80vh]">
         {children}
       </main>
       <Footer />
