@@ -25,7 +25,6 @@ export function ProductCard({ products }) {
   return (
     <Card 
     className="w-full max-w-sm overflow-hidden rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-all bg-white" 
-    onClick={handleCardClick}
     >
       {/* 🖼️ Product Image */}
       <CardHeader className="p-0">
@@ -36,6 +35,8 @@ export function ProductCard({ products }) {
           height={300}
           className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105"
           priority
+    onClick={handleCardClick}
+
         />
       </CardHeader>
 
