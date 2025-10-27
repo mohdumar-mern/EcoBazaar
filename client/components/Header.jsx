@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import NavButton from "./NavButton";
+import NavButton from "./ui/NavButton";
 import { Menu, X, ShoppingCart, User } from "lucide-react";
 
 export default function Header() {

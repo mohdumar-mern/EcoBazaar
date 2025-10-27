@@ -1,9 +1,22 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PropTypes from "prop-types";
 
-const NavButton = ({ icon: Icon, label, href, variant = "ghost", className = "" }) => {
-  const content = Icon ? <Icon className="w-5 h-5" /> : <span>{label}</span>;
+const IconBtn = ({
+  icon: Icon,
+  label,
+  href,
+  variant = "ghost",
+  className = "",
+}) => {
+  // Icon + label layout
+  const content = (
+    <div className="flex items-center gap-2">
+      <span className="text-sm font-medium">{label}</span>
+      {Icon && <Icon className="w-5 h-5" />}
+    </div>
+  );
 
   return (
     <Button
@@ -11,7 +24,7 @@ const NavButton = ({ icon: Icon, label, href, variant = "ghost", className = "" 
       size="default"
       aria-label={label}
       title={label}
-      className={`rounded-full transition-colors hover:text-green-600 ${className}`}
+      className={`rounded-md transition-colors hover:text-green-600 ${className}`}
       asChild={!!href}
     >
       {href ? <Link href={href}>{content}</Link> : content}
@@ -19,7 +32,7 @@ const NavButton = ({ icon: Icon, label, href, variant = "ghost", className = "" 
   );
 };
 
-NavButton.propTypes = {
+IconBtn.propTypes = {
   icon: PropTypes.elementType,
   label: PropTypes.string.isRequired,
   href: PropTypes.string,
@@ -27,4 +40,4 @@ NavButton.propTypes = {
   className: PropTypes.string,
 };
 
-export default NavButton;
+export default IconBtn;

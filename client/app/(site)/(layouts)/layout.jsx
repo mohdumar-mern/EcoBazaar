@@ -1,5 +1,5 @@
 import Footer from "../../../components/Footer"
-import Header from "../../../components/ui/Header"
+import Header from "../../../components/Header"
 
 const RSLayout = async ({ children }) => {
   return (
