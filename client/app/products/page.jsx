@@ -2,7 +2,8 @@
 
 import { ProductCard } from '@/components/ProductCard';
 import React from 'react'
-import { useGetProductsQuery } from '../features/product/productApiSlice';
+import { selectAllProducts, useGetProductsQuery } from '../features/product/productApiSlice';
+import { useSelector } from 'react-redux';
 
 // export const metadata = {
 //   title: "Products | Eco Bazaar",
@@ -10,14 +11,8 @@ import { useGetProductsQuery } from '../features/product/productApiSlice';
 // };
 
 const Products = () => {
-  const {
-    data: products,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useGetProductsQuery()
-
+  const { isLoading, isError, error } = useGetProductsQuery();
+  const products = useSelector(selectAllProducts);
   console.log(products)
 
   if (isLoading) return <p>Loading...</p>
@@ -38,7 +33,7 @@ const Products = () => {
         {/* Product Grid */}
         <div className="max-w-7xl mx-auto px-4 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {products?.length > 0 ? (
-            products.map((product) => (
+            products?.map((product) => (
               <ProductCard key={product._id} products={product} />
             ))
           ) : (

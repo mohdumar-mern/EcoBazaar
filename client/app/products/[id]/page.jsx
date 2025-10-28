@@ -1,18 +1,33 @@
+"use client";
+
 import React from "react";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import {
+  selectProductById,
+  useGetProductQuery,
+} from "@/app/features/product/productApiSlice";
 
-// 🧠 Generate dynamic metadata for each product page
-export async function generateMetadata({ params }) {
-  const { id } = params;
+const ProductPage = () => {
+  // ✅ get dynamic route param
+  const params = useParams();
+  const id = params?.id;
 
-  return {
-    title: `Product ${id} | EcoBazaar`,
-    description: `View detailed information about product ${id} on EcoBazaar.`,
-  };
-}
+  // ✅ fetch all products (RTK Query auto-caches)
+  const { data, isLoading, isError, error } = useGetProductQuery(id);
+    const product = data?.product || data; // handles both `{product: {...}}` or just `{...}` formats
 
-const ProductPage = async ({ params }) => {
-  const { id } =await params;
-  console.log("Product ID:", id);
+
+  console.log(product)
+
+  // ✅ select product from normalized cache
+
+
+  // // ✅ handle states
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error?.message || "Something went wrong"}</p>;
+
+  if (!product) return <p>Product not found</p>;
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -21,11 +36,16 @@ const ProductPage = async ({ params }) => {
       </h1>
       <div className="bg-white shadow-md rounded-xl p-6 border border-gray-100">
         <p className="text-gray-800 text-lg">
-          Product ID: <span className="font-semibold">{id}</span>
+          <strong>Name:</strong> {product?.name}
         </p>
         <p className="text-gray-600 mt-2">
-          This is a dynamically rendered product details page for product{" "}
-          <strong>{id}</strong>.
+          <strong>Price:</strong> ₹{product.price}
+        </p>
+        <p className="text-gray-600 mt-2">
+          <strong>Category:</strong> {product.category}
+        </p>
+        <p className="text-gray-600 mt-2">
+          <strong>ID:</strong> {product._id}
         </p>
       </div>
     </div>
