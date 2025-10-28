@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RSLayout from "./(site)/(layouts)/layout";
+import ReduxProvider from "./providers/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,7 +52,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <RSLayout>{children}</RSLayout>
+        <ReduxProvider>
+          <RSLayout>{children}</RSLayout>
+        </ReduxProvider>
       </body>
     </html>
   );
