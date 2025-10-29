@@ -8,13 +8,13 @@ import Image from "next/image";
 import Rating from "@/components/Rating";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
+import ProductReview from "@/components/ProductReview";
 
 const ProductPage = () => {
   const params = useParams();
   const router = useRouter();
   const id = params?.id;
 
-  console.log("Product Page", id);
 
 
   // ✅ Fetch product data from RTK Query
@@ -183,6 +183,10 @@ const ProductPage = () => {
           </Button>
         </form>
       </div>
+
+      {/* Display Reiviews here */}
+      <ProductReview product={product} />
+
     </div>
   );
 };
