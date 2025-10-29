@@ -1,41 +1,63 @@
 import { apiSlice } from "../api/apiSlice";
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 
-// 🧩 Create an Entity Adapter
+// 🧩 Create entity adapter for normalized products
 const productAdapter = createEntityAdapter({
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
-// 🏁 Initial state
-const initialState = productAdapter.getInitialState();
+// 🏁 Initial state for normalized + pagination info
+const initialState = productAdapter.getInitialState({
+  filteredProductsCount: 0,
+  resultsPerPage: 0,
+  totalPages: 0,
+  currentPage: 1,
+});
 
-// 🚀 Inject product endpoints into base API slice
+// 🚀 Inject product endpoints
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => "/products",
+      query: (page = 1) => `/products?page=${page}`,
 
       validateStatus: (response, result) =>
         response.status === 200 && !result.isError,
 
       keepUnusedDataFor: 5,
 
-      // 🧠 Transform backend response
+      // 🧠 Transform backend response safely
       transformResponse: (responseData) => {
-        // Handle backend structure safely
-        const rawProducts = Array.isArray(responseData)
-          ? responseData
-          : responseData?.products || [];
+        const {
+          products = [],
+          filteredProductsCount = 0,
+          resultsPerPage = 0,
+          totalPages = 0,
+          currentPage = 1,
+        } = responseData || {};
 
-        const loadedProducts = rawProducts.map((product) => ({
+        const loadedProducts = products.map((product) => ({
           ...product,
-          id: product._id, // normalize _id → id for adapter
+          id: product._id, // normalize _id → id
         }));
 
-        return productAdapter.setAll(initialState, loadedProducts);
+        // ✅ Create a new plain JS object (not frozen)
+        const normalizedState = productAdapter.setAll(
+          productAdapter.getInitialState(),
+          loadedProducts
+        );
+
+        // ✅ Merge pagination info safely
+        return {
+          ...normalizedState,
+          products,
+          filteredProductsCount,
+          resultsPerPage,
+          totalPages,
+          currentPage,
+        };
       },
 
-      // 🏷️ Tags for cache invalidation
+      // 🏷️ Auto cache invalidation
       providesTags: (result) =>
         result?.ids
           ? [
@@ -45,8 +67,13 @@ export const productApiSlice = apiSlice.injectEndpoints({
           : [{ type: "Product", id: "List" }],
     }),
 
+    // ✅ Single product by ID
     getProduct: builder.query({
       query: (id) => `/product/${id}`,
+      transformResponse: (responseData) => {
+        const product = responseData?.product || responseData;
+        return product ? { ...product, id: product._id } : null;
+      },
       providesTags: (result, error, arg) =>
         result
           ? [
@@ -55,15 +82,11 @@ export const productApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: "Product", id: "List" }],
     }),
-
   }),
 });
 
-export const { 
-    useGetProductsQuery,
-    useGetProductQuery
-
- } = productApiSlice;
+// 🪄 Export hooks
+export const { useGetProductsQuery, useGetProductQuery } = productApiSlice;
 
 // 🔍 Select full query result
 export const selectProductsResult =
@@ -75,7 +98,7 @@ const selectProductsData = createSelector(
   (productsResult) => productsResult.data ?? initialState
 );
 
-// 🎛️ Export adapter selectors
+// 🧭 Adapter selectors
 export const {
   selectAll: selectAllProducts,
   selectById: selectProductById,

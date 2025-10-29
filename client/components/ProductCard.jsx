@@ -16,9 +16,10 @@ import Rating from "./Rating";
 
 export function ProductCard({ products }) {
   const router = useRouter();
+  console.log(products)
 
   const handleCardClick = () => {
-    router.push(`/products/${products._id}`);
+    router.push(`/products/${products?._id}`);
   };
 
   const handleRatingChange = (newRating) => {
@@ -39,7 +40,7 @@ export function ProductCard({ products }) {
       {/* 🖼️ Product Image */}
       <CardHeader className="p-0">
         <Image
-          src={products?.images?.[0]?.url}
+          src={products?.images?.[0]?.url || "https://cdn.pixabay.com/photo/2024/04/29/04/21/tshirt-8726716_640.jpg"}
           alt={products?.name || "Product"}
           width={400}
           height={300}

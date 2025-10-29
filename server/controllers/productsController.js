@@ -21,7 +21,7 @@ export const createProduct = asyncHandler(async (req, res) => {
 // @desc Get All Product
 // @route GET /api/v1/products
 export const getProducts = asyncHandler(async (req, res, next) => {
-    const resultsPerPage = parseInt(req.query.pageSize) || 8;
+    const resultsPerPage = parseInt(req.query.pageSize) || 4;
   // Initialize ApiFunctionality with query and query string
   const api = new ApiFunctionality(Product.find(), req.query).search().filter();
   // Getting filterd query before pagination
