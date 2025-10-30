@@ -1,9 +1,9 @@
 "use client"
-import { selectAllProducts, useGetProductsQuery } from '@/app/features/product/productApiSlice';
-import {  ProductCard } from '@/components/ProductCard'
 import React from 'react'
 import { useSelector } from 'react-redux';
 import Loader from '../Loader';
+import { selectAllProducts, useGetProductsQuery } from '../../app/features/product/productApiSlice';
+import { ProductCard } from '../ProductCard';
 
 const Trending = () => {
       const { isLoading, isError, error } = useGetProductsQuery();

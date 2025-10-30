@@ -2,13 +2,14 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useGetProductQuery } from "@/app/features/product/productApiSlice";
-import Loader from "@/components/Loader";
 import Image from "next/image";
-import Rating from "@/components/Rating";
-import { Button } from "@/components/ui/button";
+
 import { ShoppingCart } from "lucide-react";
-import ProductReview from "@/components/ProductReview";
+import { useGetProductQuery } from "../../features/product/productApiSlice";
+import Loader from "../../../components/Loader";
+import ProductReview from "../../../components/ProductReview";
+import { Button } from "../../../components/ui/button";
+import Rating from "../../../components/Rating";
 
 const ProductPage = () => {
   const params = useParams();

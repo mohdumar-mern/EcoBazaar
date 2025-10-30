@@ -9,7 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+}from "./ui/pagination";
 
 const PaginationComp = ({ currentPage, totalPages, onPageChange }) => {
   if (totalPages <= 1) return null;

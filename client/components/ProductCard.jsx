@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,9 +9,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+}from "./ui/card";
 import IconBtn from "./IconBtn";
 import Rating from "./Rating";
+import { Button } from "./ui/button";
 
 export function ProductCard({ products }) {
   const router = useRouter();

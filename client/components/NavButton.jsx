@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PropTypes from "prop-types";
+import { Button } from "./ui/button";
 
 const NavButton = ({ icon: Icon, label, href, variant = "ghost", className = "" }) => {
   const content = Icon ? <Icon className="w-5 h-5" /> : <span>{label}</span>;

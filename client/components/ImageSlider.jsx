@@ -4,14 +4,14 @@ import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+}from "./ui/carousel";
+import { Card, CardContent } from "./ui/card";
 
 export function ImageSlider() {
   const plugin = React.useRef(

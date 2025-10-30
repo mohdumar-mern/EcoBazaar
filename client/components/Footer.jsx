@@ -1,5 +1,5 @@
 import { Mail, Phone, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import NavButton from "./ui/NavButton";
+import NavButton from "./NavButton";
 import Link from "next/link";
 
 export default function Footer() {

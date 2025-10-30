@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 
 const IconBtn = ({
   icon: Icon,

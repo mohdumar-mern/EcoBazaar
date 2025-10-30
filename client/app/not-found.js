@@ -1,6 +1,7 @@
 "use client";
 
-import NavButton from "@/components/ui/NavButton";
+import NavButton from "../components/NavButton";
+
 
 export default function NotFound() {
   return (

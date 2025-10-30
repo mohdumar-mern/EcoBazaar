@@ -1,5 +1,5 @@
-import Trending from "@/components/(trending)/page";
-import {  ImageSlider } from "@/components/ImageSlider";
+import Trending from "../../../components/(trending)/page";
+import { ImageSlider } from "../../../components/ImageSlider";
 
 export const metadata = {
   title: "EcoBazaar | Shop",

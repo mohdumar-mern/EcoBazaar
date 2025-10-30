@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { ProductCard } from "@/components/ProductCard";
-import Loader from "@/components/Loader";
 import {
   useGetProductsQuery,
   selectAllProducts,
 } from "../features/product/productApiSlice";
-import { useSelector } from "react-redux";
-import PaginationComp from "@/components/Pagination";
+import Loader from "../../components/Loader";
+import { ProductCard } from "../../components/ProductCard";
+import PaginationComp from "../../components/Pagination";
 
 const Products = () => {
   const [page, setPage] = useState(1);
