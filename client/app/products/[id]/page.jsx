@@ -6,7 +6,7 @@ import { useGetProductQuery } from "@/app/features/product/productApiSlice";
 import Loader from "@/components/Loader";
 import Image from "next/image";
 import Rating from "@/components/Rating";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { ShoppingCart } from "lucide-react";
 import ProductReview from "@/components/ProductReview";
 
