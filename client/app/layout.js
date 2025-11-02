@@ -57,12 +57,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
       >
-        {/* <ReduxProvider>
-          <RSLayout> */}
+       <ReduxProvider>
+        {/*    <RSLayout> */}
             {children}
 
-          {/* </RSLayout>
-        </ReduxProvider> */}
+          {/* </RSLayout> */}
+        </ReduxProvider>
       </body>
     </html>
   );
