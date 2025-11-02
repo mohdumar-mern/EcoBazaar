@@ -9,7 +9,7 @@ export default function SiteHomePage() {
   return (
     <section className="p-8 min-h-screen">
       <ImageSlider />
-      <Trending />
+      {/* <Trending /> */}
     </section>
   );
 }
