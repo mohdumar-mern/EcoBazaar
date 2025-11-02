@@ -2,9 +2,20 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
+ 
   images: {
-    domains: ['cdn.pixabay.com'], // ✅ Allow this domain
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
   },
+
 
 };
 
