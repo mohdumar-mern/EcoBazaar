@@ -1,4 +1,4 @@
-import SiteHomePage from "./(site)/(layouts)/page";
+import SiteHomePage from "@/components/(site)/(layouts)/page";
 
 export default function Home() {
   return (
